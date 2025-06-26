@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card p-4 mt-4">
+  <h3>📊 Monthly Summary</h3>
+  <p><strong>Total Expense:</strong> ₹{{ total_expense }}</p>
+ <!-- 🔍 Debug Output -->
+  <p>Category: {{ chart_labels }}</p>
+  <p>Amount: {{ chart_values }}</p>
+
+  {% if chart_values %}
+    <div style="width: 300px; height: 300px; margin: auto;">
+  <canvas id="expenseChart"></canvas>
+</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      const ctx = document.getElementById('expenseChart').getContext('2d');
+      const expenseChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: {{ chart_labels|tojson }},
+          datasets: [{
+            label: 'Expenses by Category',
+            data: {{ chart_values|tojson }},
+            backgroundColor: [
+              '#f87171', '#60a5fa', '#34d399', '#facc15', '#c084fc', '#fb923c'
+            ]
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: 'bottom' }
+          }
+        }
+      });
+    </script>
+  {% else %}
+    <p>No expense data available to show chart.</p>
+  {% endif %}
+
+  <a href="/dashboard" class="btn btn-secondary mt-3">← Back to Dashboard</a>
+</div>
+{% endblock %}

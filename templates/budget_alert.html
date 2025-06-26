@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Budget Alerts{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2>🚨 Budget Alerts</h2>
+  <hr>
+  {% if alerts %}
+    <div class="alert alert-danger">
+      <ul>
+        {% for alert in alerts %}
+          <li>{{ alert }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% else %}
+    <div class="alert alert-success">
+      👍 All spending is within your budget limits!
+    </div>
+  {% endif %}
+  <a href="{{ url_for('dashboard') }}" class="btn btn-secondary mt-3">⬅️ Back to Dashboard</a>
+</div>
+{% endblock %}
