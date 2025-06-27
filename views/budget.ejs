@@ -1,0 +1,65 @@
+<% const body = `
+<div class="card">
+    <h2 style="margin-bottom: 2rem; color: #333;">Budget Management</h2>
+    
+    ${error ? `<div class="error">${error}</div>` : ''}
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+        <div class="card">
+            <h3 style="margin-bottom: 1rem;">Set Budget</h3>
+            <form method="POST" action="/budget">
+                <div class="form-group">
+                    <label for="category">Category:</label>
+                    <select id="category" name="category" required>
+                        <option value="">Select Category</option>
+                        <option value="Food">Food</option>
+                        <option value="Transportation">Transportation</option>
+                        <option value="Entertainment">Entertainment</option>
+                        <option value="Shopping">Shopping</option>
+                        <option value="Bills">Bills</option>
+                        <option value="Healthcare">Healthcare</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="amount">Budget Amount:</label>
+                    <input type="number" id="amount" name="amount" step="0.01" required>
+                </div>
+                
+                <button type="submit" class="btn">Set Budget</button>
+            </form>
+        </div>
+        
+        <div class="card">
+            <h3 style="margin-bottom: 1rem;">Current Month: ${currentMonth}/${currentYear}</h3>
+            <p style="color: #666;">Manage your monthly budget allocations by category.</p>
+        </div>
+    </div>
+    
+    <h3 style="margin-bottom: 1rem; color: #333;">Current Budgets</h3>
+    
+    ${budgets.length > 0 ? `
+        <table>
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Budget Amount</th>
+                    <th>Month/Year</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${budgets.map(budget => `
+                    <tr>
+                        <td>${budget.category}</td>
+                        <td>$${budget.amount.toFixed(2)}</td>
+                        <td>${budget.month}/${budget.year}</td>
+                    </tr>
+                `).join('')}
+            </tbody>
+        </table>
+    ` : '<p style="text-align: center; color: #666; margin: 2rem 0;">No budgets set for this month.</p>'}
+</div>
+`; %>
+
+<%- include('base', { body: body, username: username }) %>

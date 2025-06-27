@@ -1,0 +1,53 @@
+<% const body = `
+<div class="card">
+    <h1 style="margin-bottom: 2rem; color: #333;">Welcome, ${username}!</h1>
+    
+    ${error ? `<div class="error">${error}</div>` : ''}
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
+        <div class="card" style="text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+            <h3>Total This Month</h3>
+            <p style="font-size: 2rem; font-weight: bold; margin-top: 1rem;">$${totalExpenses.toFixed(2)}</p>
+        </div>
+        
+        <div class="card" style="text-align: center; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white;">
+            <h3>Quick Actions</h3>
+            <div style="margin-top: 1rem;">
+                <a href="/add-expense" class="btn" style="background: rgba(255,255,255,0.2); margin: 0.5rem;">Add Expense</a>
+                <a href="/budget" class="btn" style="background: rgba(255,255,255,0.2); margin: 0.5rem;">Manage Budget</a>
+            </div>
+        </div>
+    </div>
+    
+    <h2 style="margin-bottom: 1rem; color: #333;">Recent Expenses</h2>
+    
+    ${expenses.length > 0 ? `
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Category</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                    <th>Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${expenses.map(expense => `
+                    <tr>
+                        <td>${new Date(expense.date).toLocaleDateString()}</td>
+                        <td>${expense.category}</td>
+                        <td>${expense.description || '-'}</td>
+                        <td>$${expense.amount.toFixed(2)}</td>
+                        <td style="color: ${expense.type === 'income' ? '#27ae60' : '#e74c3c'};">
+                            ${expense.type}
+                        </td>
+                    </tr>
+                `).join('')}
+            </tbody>
+        </table>
+    ` : '<p style="text-align: center; color: #666; margin: 2rem 0;">No expenses recorded yet. <a href="/add-expense">Add your first expense</a></p>'}
+</div>
+`; %>
+
+<%- include('base', { body: body, username: username }) %>
